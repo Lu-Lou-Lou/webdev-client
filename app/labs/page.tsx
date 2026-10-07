@@ -9,7 +9,9 @@ export default function Labs() {
           <Link href="/labs/lab1">Lab 1: HTML Examples</Link>
         </li>
         <li>
-          <Link href="/labs/lab2">Lab 2: CSS Basics</Link>
+          <Link href="/labs/lab2" id="wd-lab2-link">
+            Lab 2: CSS Basics
+          </Link>
         </li>
         <li>
           <Link href="/labs/lab3">Lab 3: JavaScript Fundamentals</Link>

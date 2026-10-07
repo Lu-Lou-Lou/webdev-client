@@ -7,6 +7,7 @@ import Margins from "./Margins";
 import BoxModel from "./BoxModel";
 import Corners from "./Corners";
 import Display from "./Display";
+import Dimensions from "./Dimensions";
 
 export default function Lab2() {
   return (
@@ -45,6 +46,7 @@ export default function Lab2() {
       <BoxModel/>
       <Corners/>
       <Display/>
+      <Dimensions/>
     </div>
     <div id="wd-css-class-selectors">
     <h3>Class selectors</h3>

@@ -3,6 +3,14 @@ import Link from "next/link";
 export default function Labs() {
   return (
     <div id="wd-labs">
+      <h2>Ying-Lou Lu</h2>
+      <a
+        id="wd-github"
+        href="https://github.com/Lu-Lou-Lou/webdev-client"
+        target="_blank"
+      >
+        GitHub Repository
+      </a>
       <h1>Labs</h1>
       <ul>
         <li>

@@ -8,6 +8,12 @@ import BoxModel from "./BoxModel";
 import Corners from "./Corners";
 import Display from "./Display";
 import Dimensions from "./Dimensions";
+import Positions from "./Positions";
+import Zindex from "./Zindex";
+import Float from "./Float";
+import GridLayout from "./GridLayout";
+import Flex from "./Flex";
+import MediaQueriesDemo from "./MediaQueriesDemo";
 
 export default function Lab2() {
   return (
@@ -47,6 +53,12 @@ export default function Lab2() {
       <Corners/>
       <Display/>
       <Dimensions/>
+      <Positions/>
+      <Zindex/>
+      <Float/>
+      <GridLayout/>
+      <Flex/>
+      <MediaQueriesDemo/>
     </div>
     <div id="wd-css-class-selectors">
     <h3>Class selectors</h3>

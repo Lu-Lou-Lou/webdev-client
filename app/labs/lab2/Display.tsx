@@ -30,6 +30,17 @@ export default function Display() {
           Block 3
         </span>
       </div>
+      <div id="wd-ai-display" className="wd-display-inline wd-bg-color-yellow">
+        AI inline display sample
+      </div>
+      <h3>MyInline</h3>
+      <div>
+        <span className="wd-display-inline wd-bg-color-blue">MyInline 1</span>
+        <span className="wd-display-inline wd-bg-color-yellow">MyInline 2</span>
+        <span className="wd-display-inline wd-bg-color-red wd-fg-color-white">
+          MyInline 3
+        </span>
+      </div>
     </div>
   );
 }

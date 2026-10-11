@@ -8,6 +8,10 @@ export default function Dimensions() {
           Landscape
         </div>
         <div className="wd-dimension-square wd-bg-color-red">Square</div>
+        <div id="wd-ai-dimension" className="wd-ai-dimension">
+          This long sentence demonstrates how text flows inside a box with a declared width of one hundred twenty pixels and a height of sixty pixels.
+        </div>
+        <div className="wd-dimension-my-box wd-bg-color-yellow">This is a really really long sentence.</div>
       </div>
     </div>
   );

@@ -12,6 +12,12 @@ export default function Positions() {
             Landscape
           </div>
           <div className="wd-bg-color-red wd-dimension-square">Square</div>
+          <div id="wd-ai-relative" className="wd-ai-pos-relative-nudge wd-bg-color-yellow wd-dimension-square">
+            AI relative nudge
+          </div>
+          <div className="wd-pos-relative-nudge-my-box wd-bg-color-blue wd-fg-color-white wd-dimension-square">
+            On my own
+          </div>
         </div>
       </div>
 
@@ -27,6 +33,12 @@ export default function Positions() {
           <div className="wd-pos-absolute-120-20 wd-bg-color-red wd-dimension-square">
             Square
           </div>
+          <div className="wd-pos-absolute-my-corner wd-bg-color-yellow wd-dimension-landscape">
+            On my own
+          </div>
+          <div id="wd-ai-absolute" className="wd-ai-pos-absolute-br wd-bg-color-red wd-dimension-square">
+            AI bottom-right
+          </div>
         </div>
         <br /><br /><br /><br /><br /><br /><br />
       </div>
@@ -38,6 +50,12 @@ export default function Positions() {
         rest of the page. Its position is &quot;Fixed&quot;.
         <div className="wd-pos-fixed wd-dimension-square wd-bg-color-blue wd-fg-color-white">
           Fixed position
+        </div>
+        <div id="wd-ai-fixed" className="wd-ai-pos-fixed wd-bg-color-red wd-fg-color-white">
+          AI fixed
+        </div>
+        <div className="wd-pos-fixed-my-badge wd-bg-color-green wd-fg-color-white">
+          My badge
         </div>
       </div>
     </div>

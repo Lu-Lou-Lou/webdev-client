@@ -13,6 +13,12 @@ export default function TailwindSpacing() {
         This div has starting padding of 2, top padding of 4, and bottom padding of 8.
       </div>
       <div className="bg-green-200 p-6">This div has padding all around of 6.</div>
+      <div id="wd-ai-spacing" className="bg-purple-200 mt-6 ps-8 pb-4">
+        This div has a top margin of 6, start padding of 8, and bottom padding of 4.
+      </div>
+      <div className="bg-pink-200 m-5 p-3 py-7">
+        This div has margin of 5, padding of 3, and vertical padding of 7.
+      </div>
     </div>
   );
 }

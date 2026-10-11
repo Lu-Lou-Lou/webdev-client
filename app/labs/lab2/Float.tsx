@@ -21,6 +21,16 @@ export default function Float() {
         <div className="wd-float-done" />
       </div>
       <div>
+        <div id="wd-ai-float" className="wd-float-right wd-dimension-square wd-bg-color-green wd-fg-color-white">
+          AI float
+        </div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+          vitae justo at arcu facilisis consequat.
+        </p>
+        <div className="wd-float-done" />
+      </div>
+      <div>
         <div className="wd-float-left wd-dimension-portrait wd-bg-color-yellow">
           Yellow
         </div>
@@ -31,6 +41,13 @@ export default function Float() {
           Red
         </div>
         <img className="wd-float-right" src={STARSHIP} alt="Starship" />
+        <div className="wd-float-done" />
+      </div>
+      <div>
+        <div className="wd-float-left wd-dimension-square wd-bg-color-green wd-fg-color-white">
+          My float
+        </div>
+        {LOREM}
         <div className="wd-float-done" />
       </div>
     </div>

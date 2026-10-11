@@ -67,3 +67,37 @@
     text-decoration: underline;
   }
 }
+
+@media (min-width: 1500px) {
+  .wd-media-queries-demo {
+    background-color: purple;
+    color: white;
+  }
+  .wd-media-queries-demo li.wd-mq-rule-1250 {
+    opacity: 0.55;
+    font-weight: normal;
+    text-decoration: none;
+  }
+  .wd-media-queries-demo li.wd-mq-rule-1500 {
+    opacity: 1;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 749px) {
+  .wd-media-queries-demo {
+    background-color: purple;
+    color: white;
+  }
+  .wd-media-queries-demo li.wd-mq-rule-default {
+    opacity: 0.55;
+    font-weight: normal;
+    text-decoration: none;
+  }
+  .wd-media-queries-demo li.wd-mq-rule-ai {
+    opacity: 1;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}

@@ -40,19 +40,36 @@ export default function TailwindResponsiveDesign() {
           </div>
           <div className="min-w-0 p-8">
             <div className="text-sm font-semibold tracking-wide text-indigo-500 uppercase">
-              Professional Courses
+              Graduate Courses
             </div>
             <a
               href="#"
-              className="mt-1 block text-lg leading-tight font-medium text-black no-underline hover:underline"
+              className="mt-1 block text-lg leading-tight font-medium text-black no-underline hover:underline md:text-2xl"
             >
-              Rocket Propulsion Fundamentals
+              Web Development
             </a>
             <p className="mt-2 text-gray-500">
-              An in-depth study of the fundamentals of rocket propulsion...
+              An in-depth study of developing web applications.
             </p>
           </div>
         </div>
+      </div>
+      <div
+        id="wd-ai-responsive"
+        className="mx-auto mt-6 w-full max-w-md rounded-xl bg-white p-6 shadow-md md:max-w-2xl md:bg-indigo-50"
+      >
+        <div className="text-sm font-semibold tracking-wide text-indigo-500 uppercase">
+          Professional Courses
+        </div>
+        <a
+          href="#"
+          className="mt-1 block text-lg leading-tight font-medium text-black no-underline hover:underline"
+        >
+          Rocket Propulsion Fundamentals
+        </a>
+        <p className="mt-2 text-gray-500">
+          An in-depth study of the fundamentals of rocket propulsion...
+        </p>
       </div>
     </div>
   );

@@ -241,6 +241,13 @@ p#wd-id-selector-3 {
   padding: 5px;
 }
 
+.wd-display-my-block {
+  display: block;
+  width: 200px;
+  height: 30px;
+  padding: 15px;
+}
+
 .wd-dimension-portrait {
   width: 75px;
   height: 100px;
@@ -252,6 +259,17 @@ p#wd-id-selector-3 {
 .wd-dimension-square {
   width: 75px;
   height: 75px;
+}
+
+.wd-ai-dimension {
+  width: 120px;
+  height: 60px;
+  background-color: yellow;
+}
+
+.wd-dimension-my-box {
+  width: 150px;
+  height: 50px;
 }
 
 .wd-pos-relative-nudge-up-right {
@@ -266,6 +284,18 @@ p#wd-id-selector-3 {
 }
 .wd-pos-relative {
   position: relative;
+}
+
+.wd-ai-pos-relative-nudge {
+  position: relative;
+  top: 15px;
+  right: 25px;
+}
+
+.wd-pos-relative-nudge-my-box {
+    position: relative;
+    bottom: 35px;
+    right: 45px;
 }
 
 .wd-pos-absolute-10-10 {
@@ -284,14 +314,54 @@ p#wd-id-selector-3 {
   left: 120px;
 }
 
+.wd-pos-absolute-my-corner {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.wd-ai-pos-absolute-br {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
 .wd-pos-fixed {
   position: fixed;
   right: 0px;
   bottom: 50%;
 }
 
+.wd-ai-pos-fixed {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 5px 10px;
+}
+
+.wd-pos-fixed-my-badge {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+}
+
 .wd-zindex-bring-to-front {
   z-index: 10;
+}
+
+.wd-zindex-my-box {
+  position: absolute;
+  top: 30px;
+  left: 80px;
+  z-index: 15;
+}
+
+.wd-ai-zindex-top {
+  z-index: 20;
+  position: absolute;
+  top: 80px;
+  left: 80px;
 }
 
 .wd-float-left {

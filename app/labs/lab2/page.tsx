@@ -14,11 +14,15 @@ import Float from "./Float";
 import GridLayout from "./GridLayout";
 import Flex from "./Flex";
 import MediaQueriesDemo from "./MediaQueriesDemo";
+import ReactIconsSampler from "./ReactIconsSampler";
 
 export default function Lab2() {
   return (
     <div id="wd-lab2">
       <h2>Lab 2 - Cascading Style Sheets</h2>
+      <p>
+        <a href="/labs/lab2/tailwind">Open Tailwind CSS lab →</a>
+      </p>
       <h3>Styling with the STYLE attribute</h3>
       <p>
         Style attribute allows configuring look and feel right on the
@@ -59,6 +63,7 @@ export default function Lab2() {
       <GridLayout/>
       <Flex/>
       <MediaQueriesDemo/>
+      <ReactIconsSampler/>
     </div>
     <div id="wd-css-class-selectors">
     <h3>Class selectors</h3>

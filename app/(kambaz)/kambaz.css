@@ -1,6 +1,3 @@
-@import "tailwindcss/theme" layer(theme);
-@import "tailwindcss/utilities" layer(utilities);
-
 /* System sans-serif — Tailwind utilities alone
    do not set the body font */
 #wd-kambaz {

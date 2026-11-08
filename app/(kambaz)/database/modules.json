@@ -1,0 +1,270 @@
+[
+  {
+    "_id": "1234-module-1",
+    "name": "Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda",
+    "description": "",
+    "course": "1234",
+    "lessons": [
+      {
+        "_id": "1234-module-1-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Introduction to the course\nLearn what is Web Development",
+        "module": "1234-module-1"
+      },
+      {
+        "_id": "1234-module-1-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - Chapter 1 - Introduction\nFull Stack Developer - Chapter 2 - Creating User Interfaces",
+        "module": "1234-module-1"
+      },
+      {
+        "_id": "1234-module-1-lesson-3",
+        "name": "SLIDES",
+        "description": "Introduction to Web Development\nCreating an HTTP server with Node.js\nCreating a React Application",
+        "module": "1234-module-1"
+      }
+    ]
+  },
+  {
+    "_id": "1234-module-2",
+    "name": "Week 2 - React Components and State",
+    "description": "",
+    "course": "1234",
+    "lessons": [
+      {
+        "_id": "1234-module-2-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Build reusable React components\nManage component state and events",
+        "module": "1234-module-2"
+      },
+      {
+        "_id": "1234-module-2-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - React Components and State",
+        "module": "1234-module-2"
+      }
+    ]
+  },
+  {
+    "_id": "1234-module-3",
+    "name": "Week 3",
+    "description": "",
+    "course": "1234",
+    "lessons": []
+  },
+  {
+    "_id": "1234-module-4",
+    "name": "Sample module (AI)",
+    "description": "",
+    "course": "1234",
+    "lessons": [
+      {
+        "_id": "1234-module-4-lesson-1",
+        "name": "Sample lesson (AI)",
+        "description": "",
+        "module": "1234-module-4"
+      }
+    ]
+  },
+  {
+    "_id": "2345-module-1",
+    "name": "Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda",
+    "description": "",
+    "course": "2345",
+    "lessons": [
+      {
+        "_id": "2345-module-1-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Introduction to the course\nLearn what is Web Development",
+        "module": "2345-module-1"
+      },
+      {
+        "_id": "2345-module-1-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - Chapter 1 - Introduction\nFull Stack Developer - Chapter 2 - Creating User Interfaces",
+        "module": "2345-module-1"
+      },
+      {
+        "_id": "2345-module-1-lesson-3",
+        "name": "SLIDES",
+        "description": "Introduction to Web Development\nCreating an HTTP server with Node.js\nCreating a React Application",
+        "module": "2345-module-1"
+      }
+    ]
+  },
+  {
+    "_id": "2345-module-2",
+    "name": "Week 2 - React Components and State",
+    "description": "",
+    "course": "2345",
+    "lessons": [
+      {
+        "_id": "2345-module-2-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Build reusable React components\nManage component state and events",
+        "module": "2345-module-2"
+      },
+      {
+        "_id": "2345-module-2-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - React Components and State",
+        "module": "2345-module-2"
+      }
+    ]
+  },
+  {
+    "_id": "2345-module-3",
+    "name": "Week 3",
+    "description": "",
+    "course": "2345",
+    "lessons": []
+  },
+  {
+    "_id": "2345-module-4",
+    "name": "Sample module (AI)",
+    "description": "",
+    "course": "2345",
+    "lessons": [
+      {
+        "_id": "2345-module-4-lesson-1",
+        "name": "Sample lesson (AI)",
+        "description": "",
+        "module": "2345-module-4"
+      }
+    ]
+  },
+  {
+    "_id": "3456-module-1",
+    "name": "Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda",
+    "description": "",
+    "course": "3456",
+    "lessons": [
+      {
+        "_id": "3456-module-1-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Introduction to the course\nLearn what is Web Development",
+        "module": "3456-module-1"
+      },
+      {
+        "_id": "3456-module-1-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - Chapter 1 - Introduction\nFull Stack Developer - Chapter 2 - Creating User Interfaces",
+        "module": "3456-module-1"
+      },
+      {
+        "_id": "3456-module-1-lesson-3",
+        "name": "SLIDES",
+        "description": "Introduction to Web Development\nCreating an HTTP server with Node.js\nCreating a React Application",
+        "module": "3456-module-1"
+      }
+    ]
+  },
+  {
+    "_id": "3456-module-2",
+    "name": "Week 2 - React Components and State",
+    "description": "",
+    "course": "3456",
+    "lessons": [
+      {
+        "_id": "3456-module-2-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Build reusable React components\nManage component state and events",
+        "module": "3456-module-2"
+      },
+      {
+        "_id": "3456-module-2-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - React Components and State",
+        "module": "3456-module-2"
+      }
+    ]
+  },
+  {
+    "_id": "3456-module-3",
+    "name": "Week 3",
+    "description": "",
+    "course": "3456",
+    "lessons": []
+  },
+  {
+    "_id": "3456-module-4",
+    "name": "Sample module (AI)",
+    "description": "",
+    "course": "3456",
+    "lessons": [
+      {
+        "_id": "3456-module-4-lesson-1",
+        "name": "Sample lesson (AI)",
+        "description": "",
+        "module": "3456-module-4"
+      }
+    ]
+  },
+  {
+    "_id": "CS9999-module-1",
+    "name": "Week 1, Lecture 1 - Course Introduction, Syllabus, Agenda",
+    "description": "",
+    "course": "CS9999",
+    "lessons": [
+      {
+        "_id": "CS9999-module-1-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Introduction to the course\nLearn what is Web Development",
+        "module": "CS9999-module-1"
+      },
+      {
+        "_id": "CS9999-module-1-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - Chapter 1 - Introduction\nFull Stack Developer - Chapter 2 - Creating User Interfaces",
+        "module": "CS9999-module-1"
+      },
+      {
+        "_id": "CS9999-module-1-lesson-3",
+        "name": "SLIDES",
+        "description": "Introduction to Web Development\nCreating an HTTP server with Node.js\nCreating a React Application",
+        "module": "CS9999-module-1"
+      }
+    ]
+  },
+  {
+    "_id": "CS9999-module-2",
+    "name": "Week 2 - React Components and State",
+    "description": "",
+    "course": "CS9999",
+    "lessons": [
+      {
+        "_id": "CS9999-module-2-lesson-1",
+        "name": "LEARNING OBJECTIVES",
+        "description": "Build reusable React components\nManage component state and events",
+        "module": "CS9999-module-2"
+      },
+      {
+        "_id": "CS9999-module-2-lesson-2",
+        "name": "READING",
+        "description": "Full Stack Developer - React Components and State",
+        "module": "CS9999-module-2"
+      }
+    ]
+  },
+  {
+    "_id": "CS9999-module-3",
+    "name": "Week 3",
+    "description": "",
+    "course": "CS9999",
+    "lessons": []
+  },
+  {
+    "_id": "CS9999-module-4",
+    "name": "Sample module (AI)",
+    "description": "",
+    "course": "CS9999",
+    "lessons": [
+      {
+        "_id": "CS9999-module-4-lesson-1",
+        "name": "Sample lesson (AI)",
+        "description": "",
+        "module": "CS9999-module-4"
+      }
+    ]
+  }
+]

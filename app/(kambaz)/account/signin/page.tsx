@@ -1,16 +1,35 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUsersStore } from "../../store/usersStore";
+import { useAccountContext } from "../AccountContext";
 import Link from "next/link";
 
 export default function Signin() {
+  const users = useUsersStore((state) => state.users);
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const { setCurrentUser } = useAccountContext();
+  const router = useRouter();
+  const signin = () => {
+    const user = users.find((u) => u.username === credentials.username && u.password === credentials.password);
+    if (!user) return;
+    setCurrentUser(user);
+    router.push("/dashboard");
+  };
   return (
     <div id="wd-signin-screen" className="max-w-sm">
       <h1 className="mb-3 text-2xl font-semibold">Sign in</h1>
       <input
         id="wd-username"
+        value={credentials.username}
+        onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
         placeholder="username"
         className="mb-2 w-full rounded border border-neutral-300 px-3 py-2"
       />
       <input
         id="wd-password"
+        value={credentials.password}
+        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
         placeholder="password"
         type="password"
         className="mb-2 w-full rounded border border-neutral-300 px-3 py-2"
@@ -23,13 +42,14 @@ export default function Signin() {
         placeholder="sample note"
         className="mb-2 w-full rounded border border-neutral-300 px-3 py-2"
       />
-      <Link
+      <button
+        type="button"
+        onClick={signin}
         id="wd-signin-btn"
-        href="/account/profile"
         className="mb-2 block w-full rounded bg-blue-600 px-3 py-2 text-center text-white no-underline"
       >
         Sign in
-      </Link>
+      </button>
       <Link id="wd-signup-link" href="/account/signup">
         Sign up
       </Link>

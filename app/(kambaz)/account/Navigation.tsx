@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useAccountContext } from "./AccountContext";
+
 export default function AccountNavigation() {
+  const { currentUser } = useAccountContext();
   const pathname = usePathname() ?? "";
   const signin = "/account/signin";
   const signup = "/account/signup";
@@ -11,6 +14,7 @@ export default function AccountNavigation() {
 
   return (
     <div id="wd-account-navigation" className="wd list-group rounded-none text-lg">
+      {!currentUser && <>
       <Link
         href={signin}
         id="wd-account-signin-link"
@@ -33,7 +37,8 @@ export default function AccountNavigation() {
       >
         Signup
       </Link>
-      <Link
+      </>}
+      {currentUser && <Link
         href={profile}
         id="wd-account-profile-link"
         className={
@@ -43,7 +48,7 @@ export default function AccountNavigation() {
         }
       >
         Profile
-      </Link>
+      </Link>}
     </div>
   );
 }

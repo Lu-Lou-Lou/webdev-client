@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "1234",
+    "name": "CS5610 Web Development",
+    "number": "CS5610",
+    "startDate": "2023-09-10",
+    "endDate": "2023-12-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "Building full-stack Web applications",
+    "image": "/images/reactjs.jpg"
+  },
+  {
+    "_id": "2345",
+    "name": "CS2345 Node JS",
+    "number": "CS2345",
+    "startDate": "2023-09-10",
+    "endDate": "2023-12-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "Server side JavaScript",
+    "image": "/images/nodejs.jpg"
+  },
+  {
+    "_id": "3456",
+    "name": "CS3456 MongoDB",
+    "number": "CS3456",
+    "startDate": "2023-09-10",
+    "endDate": "2023-12-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "NoSQL Databases",
+    "image": "/images/mongodb.jpg"
+  },
+  {
+    "_id": "CS9999",
+    "name": "CS9999 Sample Course",
+    "number": "CS9999",
+    "startDate": "2023-09-10",
+    "endDate": "2023-12-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "Assistant-generated sample — not my course",
+    "image": "/images/reactjs.jpg"
+  }
+]

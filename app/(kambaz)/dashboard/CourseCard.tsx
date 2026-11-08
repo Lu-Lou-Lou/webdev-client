@@ -22,7 +22,7 @@ export default function CourseCard({
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
-        href={enrolled ? `/courses/${course._id}/home` : "/dashboard"}
+        href={!currentUser || enrolled ? `/courses/${course._id}/home` : "/dashboard"}
         className="wd-dashboard-course-link block text-neutral-900 no-underline"
       >
         <Image

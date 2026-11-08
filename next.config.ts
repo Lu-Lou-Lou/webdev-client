@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  rewrites() {
+    return [
+      {
+        source: "/courses/RS101/:path*",
+        destination: "/courses/1234/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

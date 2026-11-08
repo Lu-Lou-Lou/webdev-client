@@ -23,7 +23,7 @@ export default function CoursesLayout({
 
   const { currentUser } = useAccountContext();
   const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  if (!currentUser || !enrollments.some((item) => item.user === currentUser._id && item.course === courseId)) {
+  if (currentUser && !enrollments.some((item) => item.user === currentUser._id && item.course === courseId)) {
     redirect("/dashboard");
   }
   return (

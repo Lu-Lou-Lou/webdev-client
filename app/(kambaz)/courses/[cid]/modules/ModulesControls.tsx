@@ -1,6 +1,6 @@
 import ModuleEditor from "./ModuleEditor";
 
-export default function ModulesControls() {
+export default function ModulesControls({ onCreate }: { onCreate?: (name: string) => Promise<boolean> }) {
   return (
     <div id="wd-modules-controls" className="mb-3 flex flex-wrap items-center gap-2">
       <button
@@ -22,7 +22,7 @@ export default function ModulesControls() {
         <option value="publish-all">Publish All</option>
         <option value="unpublish-all">Unpublish All</option>
       </select>
-      <ModuleEditor />
+      {onCreate && <ModuleEditor onCreate={onCreate} />}
     </div>
   );
 }

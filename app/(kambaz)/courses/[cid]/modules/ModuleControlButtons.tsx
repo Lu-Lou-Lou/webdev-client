@@ -1,27 +1,25 @@
 import { FaCheckCircle, FaPencilAlt, FaTrash } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { useModulesStore } from "../../../store/modulesStore";
 
 export default function ModuleControlButtons({
-  moduleId,
+  onEdit, onDelete,
 }: {
-  moduleId: string;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }) {
-  const deleteModule = useModulesStore((state) => state.deleteModule);
-  const editModule = useModulesStore((state) => state.editModule);
   return (
     <div className="flex items-center gap-2">
-      <FaPencilAlt
+      {onEdit && <FaPencilAlt
         className="cursor-pointer text-blue-600"
-        onClick={() => editModule(moduleId)}
+        onClick={onEdit}
         title="Edit module"
-      />
-      <FaTrash
+      />}
+      {onDelete && <FaTrash
         className="cursor-pointer text-red-600"
-        onClick={() => deleteModule(moduleId)}
+        onClick={onDelete}
         title="Delete module"
-      />
+      />}
       <FaCheckCircle className="text-green-600" />
       <BsPlus className="text-3xl" />
       <IoEllipsisVertical className="text-xl" />

@@ -1,24 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useCoursesStore, type Course } from "../store/coursesStore";
+import type { Course } from "../store/coursesStore";
 
 import { useAccountContext } from "../account/AccountContext";
 import { canManageCourses } from "../account/permissions";
-import { useEnrollmentsStore } from "../store/enrollmentsStore";
 
 export default function CourseCard({
   course,
-  onEdit,
+  enrolled, busy, onEdit, onDelete, onToggleEnrollment,
 }: {
   course: Course;
+  enrolled: boolean;
+  busy: boolean;
   onEdit: () => void;
+  onDelete: () => void;
+  onToggleEnrollment: () => void;
 }) {
-  const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const { currentUser } = useAccountContext();
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  const enroll = useEnrollmentsStore((state) => state.enroll);
-  const unenroll = useEnrollmentsStore((state) => state.unenroll);
-  const enrolled = !!currentUser && enrollments.some((item) => item.user === currentUser._id && item.course === course._id);
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
@@ -47,12 +45,12 @@ export default function CourseCard({
           </button>
           {currentUser && <button
             type="button"
+            disabled={busy}
             id={`wd-${enrolled ? "unenroll" : "enroll"}-${course._id}`}
             className={`ms-2 rounded px-3 py-1.5 text-sm font-medium text-white ${enrolled ? "bg-red-600" : "bg-green-600"}`}
             onClick={(event) => {
               event.preventDefault();
-              if (enrolled) unenroll(currentUser._id, course._id);
-              else enroll(currentUser._id, course._id);
+              onToggleEnrollment();
             }}
           >{enrolled ? "Unenroll" : "Enroll"}</button>}
           {canManageCourses(currentUser) && <>
@@ -71,11 +69,12 @@ export default function CourseCard({
           <button
             type="button"
             id="wd-delete-course-click"
+            disabled={busy}
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
               if (!canManageCourses(currentUser)) return;
-              deleteCourse(course._id);
+              onDelete();
             }}
           >
             Delete

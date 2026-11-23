@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import "./kambaz.css";
+import Session from "./account/Session";
 import KambazNavigation from "./Navigation";
 
 import { AccountProvider } from "./account/AccountContext";
@@ -9,10 +10,12 @@ export default function KambazLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <AccountProvider>
-    <div id="wd-kambaz" className="font-sans">
+      <Session>
+        <div id="wd-kambaz" className="font-sans">
       <KambazNavigation />
       <div className="wd-main-content-offset p-3">{children}</div>
-    </div>
+        </div>
+      </Session>
     </AccountProvider>
   );
 }

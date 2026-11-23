@@ -1,14 +1,15 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { redirect, useParams } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa6";
 import CourseNavigation from "./Navigation";
 import Breadcrumb from "./Breadcrumb";
-import { useCoursesStore } from "../../store/coursesStore";
+import type { Course } from "../../store/coursesStore";
+import { findCourse, findMyCourses } from "../client";
 
 import { useAccountContext } from "../../account/AccountContext";
-import { useEnrollmentsStore } from "../../store/enrollmentsStore";
+
 
 export default function CoursesLayout({
   children,
@@ -17,15 +18,29 @@ export default function CoursesLayout({
 }>) {
   const { cid } = useParams();
   const courseId = typeof cid === "string" ? cid : "";
-  const courses = useCoursesStore((state) => state.courses);
-  const course = courses.find((c) => c._id === courseId);
   const [showCourseNav, setShowCourseNav] = useState(true);
-
+  const [loaded, setLoaded] = useState<{ key: string; course?: Course; denied?: boolean }>();
   const { currentUser } = useAccountContext();
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  if (currentUser && !enrollments.some((item) => item.user === currentUser._id && item.course === courseId)) {
-    redirect("/dashboard");
-  }
+  const userId = currentUser?._id;
+  const key = JSON.stringify([courseId, userId]);
+
+  useEffect(() => {
+    let active = true;
+    const request = userId
+      ? findMyCourses().then((courses) => courses.find((item) => item._id === courseId))
+      : findCourse(courseId);
+    request.then((course) => {
+      if (active) setLoaded({ key, course, denied: !course });
+    }).catch(() => {
+      if (active) setLoaded({ key });
+    });
+    return () => { active = false; };
+  }, [courseId, key, userId]);
+
+  if (loaded?.key !== key) return null;
+  if (loaded.denied) redirect("/dashboard");
+  if (!loaded.course) return <p role="alert">Unable to load this course.</p>;
+  const { course } = loaded;
   return (
     <div id="wd-courses">
       <h2 className="text-2xl font-semibold text-red-600">

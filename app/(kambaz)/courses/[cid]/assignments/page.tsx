@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAssignmentsStore } from "../../../store/assignmentsStore";
 import { useAccountContext } from "../../../account/AccountContext";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
+import * as client from "../../client";
+import { getAccountError } from "../../../account/client";
 
 export default function Assignments() {
   const { cid } = useParams<{ cid: string }>();
@@ -13,11 +15,41 @@ export default function Assignments() {
   const { currentUser } = useAccountContext();
   const canManage = currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
   const assignments = useAssignmentsStore((state) => state.assignments);
+  const setAssignments = useAssignmentsStore((state) => state.setAssignments);
   const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    client.findAssignmentsForCourse(cid).then((items) => {
+      if (active) setAssignments(items);
+    }).catch((error: unknown) => {
+      if (active) setError(getAccountError(error, "Unable to load assignments."));
+    });
+    return () => { active = false; };
+  }, [cid, setAssignments]);
+
+  async function confirmDelete(id: string) {
+    setBusy(true);
+    setError("");
+    try {
+      await client.deleteAssignment(cid, id);
+      deleteAssignment(id, cid);
+      setDeletingId(null);
+    } catch (error) {
+      setError(getAccountError(error, "Unable to delete the assignment."));
+      setDeletingId(null);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div id="wd-assignments">
+      {error && <p role="alert" className="text-red-600">{error}</p>}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="relative">
           <FaSearch className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-neutral-500" />
@@ -73,7 +105,7 @@ export default function Assignments() {
             <h3 id="wd-delete-assignment-title" className="mb-4 text-lg">Delete this assignment?</h3>
             <div className="flex justify-end gap-2">
               <button id="wd-delete-assignment-cancel" type="button" className="rounded border border-neutral-300 px-3 py-1.5" onClick={() => setDeletingId(null)}>Cancel</button>
-              <button id="wd-delete-assignment-confirm" type="button" className="rounded bg-red-600 px-3 py-1.5 text-white" onClick={() => { deleteAssignment(deletingId, cid); setDeletingId(null); }}>Delete</button>
+              <button id="wd-delete-assignment-confirm" type="button" className="rounded bg-red-600 px-3 py-1.5 text-white" disabled={busy} onClick={() => confirmDelete(deletingId)}>Delete</button>
             </div>
           </div>
         </div>

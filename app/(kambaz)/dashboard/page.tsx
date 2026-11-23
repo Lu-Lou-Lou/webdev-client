@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import {
   emptyCourse,
@@ -10,34 +10,62 @@ import {
 
 import { useAccountContext } from "../account/AccountContext";
 import { canManageCourses } from "../account/permissions";
-import { useEnrollmentsStore } from "../store/enrollmentsStore";
+import * as client from "../courses/client";
+import { enrollIntoCourse, unenrollFromCourse } from "../courses/enrollmentsClient";
+import { getAccountError } from "../account/client";
 
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
-  const addCourse = useCoursesStore((state) => state.addCourse);
-  const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const setCourses = useCoursesStore((state) => state.setCourses);
   const [course, setCourse] = useState<Course>(emptyCourse);
-
+  const [myCourses, setMyCourses] = useState<Course[]>([]);
   const [showAllCourses, setShowAllCourses] = useState(false);
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const { currentUser } = useAccountContext();
+  const userId = currentUser?._id;
   const canManage = canManageCourses(currentUser);
-  const handleAddCourse = () => {
-    if (!canManageCourses(currentUser)) return;
-    addCourse(course);
-  };
-  const handleUpdateCourse = () => {
-    if (!canManageCourses(currentUser)) return;
-    updateCourse(course);
-  };
-  const visibleCourses = currentUser && !showAllCourses ? courses.filter((c) => enrollments.some((enrollment) => enrollment.user === currentUser._id && enrollment.course === c._id)) : courses;
+
+  const refresh = useCallback(async (active: () => boolean = () => true) => {
+    const [all, mine] = await Promise.all([
+      client.fetchAllCourses(),
+      userId ? client.findMyCourses() : Promise.resolve([]),
+    ]);
+    if (active()) {
+      setCourses(all);
+      setMyCourses(mine);
+    }
+  }, [setCourses, userId]);
+
+  useEffect(() => {
+    let active = true;
+    refresh(() => active).catch((error: unknown) => {
+      if (active) setError(getAccountError(error, "Unable to load courses."));
+    });
+    return () => { active = false; };
+  }, [refresh]);
+
+  async function applyChange(change: () => Promise<unknown>) {
+    setBusy(true);
+    setError("");
+    try {
+      await change();
+      await refresh();
+    } catch (error) {
+      setError(getAccountError(error, "Unable to save the course change."));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const visibleCourses = userId && !showAllCourses ? myCourses : courses;
   return (
     <div id="wd-dashboard">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 id="wd-dashboard-title">Dashboard</h1>
         <div className="flex gap-2">
-          <button id="wd-my-enrollments-toggle" type="button" aria-pressed={showAllCourses} onClick={() => setShowAllCourses(!showAllCourses)} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">My Enrollments</button>
-          <button id="wd-enrollments-toggle" type="button" aria-pressed={showAllCourses} onClick={() => setShowAllCourses(!showAllCourses)} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">Enrollments</button>
+          <button id="wd-my-enrollments-toggle" type="button" aria-pressed={!showAllCourses} onClick={() => setShowAllCourses(false)} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">My Enrollments</button>
+          <button id="wd-enrollments-toggle" type="button" aria-pressed={showAllCourses} onClick={() => setShowAllCourses(true)} className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">Enrollments</button>
         </div>
       </div>
       <hr />
@@ -48,7 +76,8 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={handleAddCourse}
+          disabled={busy || !course.name.trim()}
+          onClick={() => applyChange(() => client.createCourse(course))}
         >
           Add
         </button>
@@ -56,7 +85,8 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           id="wd-update-course-click"
-          onClick={handleUpdateCourse}
+          disabled={busy || course._id === emptyCourse._id || !course.name.trim()}
+          onClick={() => applyChange(() => client.updateCourse(course))}
         >
           Update
         </button>
@@ -102,22 +132,34 @@ export default function Dashboard() {
       />
       </>}
       <hr />
+      {error && <p role="alert" className="text-red-600">{error}</p>}
       <h2 id="wd-dashboard-published">Published Courses ({visibleCourses.length})</h2>
       <hr />
       <div
         id="wd-dashboard-courses"
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
-        {visibleCourses.map((c) => (
+        {visibleCourses.map((c) => {
+          const enrolled = myCourses.some((item) => item._id === c._id);
+          return (
           <CourseCard
             key={c._id}
             course={c}
-            onEdit={() => {
-              if (!canManageCourses(currentUser)) return;
-              setCourse({ ...c });
+            enrolled={enrolled}
+            busy={busy}
+            onEdit={() => setCourse({ ...c })}
+            onDelete={() => applyChange(async () => {
+              await client.deleteCourse(c._id);
+              if (course._id === c._id) setCourse(emptyCourse);
+            })}
+            onToggleEnrollment={() => {
+              if (!userId) return;
+              const change = enrolled ? unenrollFromCourse : enrollIntoCourse;
+              void applyChange(() => change(userId, c._id));
             }}
           />
-        ))}
+          );
+        })}
       </div>
     </div>
   );

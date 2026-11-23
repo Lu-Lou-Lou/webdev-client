@@ -4,19 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAccountContext } from "../AccountContext";
+import * as client from "../client";
 
 import { useUsersStore } from "../../store/usersStore";
 
 export default function Signup() {
-  const addUser = useUsersStore((state) => state.addUser);
+  const syncUser = useUsersStore((state) => state.syncUser);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const { setCurrentUser } = useAccountContext();
   const router = useRouter();
 
-  const signup = () => {
+  const signup = async () => {
     if (!username || !password) {
       setError("Username and password are required.");
       return;
@@ -26,20 +28,17 @@ export default function Signup() {
       return;
     }
     setError("");
-    setCurrentUser(addUser({
-      _id: crypto.randomUUID(),
-      username,
-      password,
-      firstName: "",
-      lastName: "",
-      email: "",
-      role: "STUDENT",
-      loginId: "",
-      section: "",
-      lastActivity: "",
-      totalActivity: "",
-    }));
-    router.push("/account/profile");
+    setBusy(true);
+    try {
+      const user = await client.signup({ username, password });
+      syncUser(user);
+      setCurrentUser(user);
+      router.push("/account/profile");
+    } catch (error) {
+      setError(client.getAccountError(error, "Unable to sign up."));
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -74,7 +73,7 @@ export default function Signup() {
         className="mb-2 w-full rounded border border-neutral-300 px-3 py-2"
       />
       {error && <p id="wd-signup-error" role="alert" className="mb-2 text-sm text-red-600">{error}</p>}
-      <button className="mb-2 block w-full rounded bg-blue-600 px-3 py-2 text-center text-white" type="button" onClick={signup} id="wd-signup-btn">
+      <button className="mb-2 block w-full rounded bg-blue-600 px-3 py-2 text-center text-white" type="button" onClick={signup} disabled={busy} id="wd-signup-btn">
         Sign up
       </button>{" "}
       <Link href="/account/signin" id="wd-signin-link">

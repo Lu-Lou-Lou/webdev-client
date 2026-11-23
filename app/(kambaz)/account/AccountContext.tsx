@@ -3,7 +3,8 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import usersJson from "../database/users.json";
 
-export type User = (typeof usersJson)[number];
+type SeedUser = (typeof usersJson)[number];
+export type User = Omit<SeedUser, "password"> & { password?: string; dob?: string };
 
 export const emptyUser: User = {
   _id: "", username: "", password: "", firstName: "", lastName: "",

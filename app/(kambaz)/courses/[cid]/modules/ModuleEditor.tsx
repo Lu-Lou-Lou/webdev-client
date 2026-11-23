@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useParams } from "next/navigation";
-import { useModulesStore } from "../../../store/modulesStore";
 
-export default function ModuleEditor() {
-  const { cid } = useParams();
+export default function ModuleEditor({ onCreate }: { onCreate: (name: string) => Promise<boolean> }) {
   const [show, setShow] = useState(false);
   const [moduleName, setModuleName] = useState("");
-  const addModule = useModulesStore((state) => state.addModule);
+  const [saving, setSaving] = useState(false);
   return (
     <>
       <button
@@ -55,11 +52,14 @@ export default function ModuleEditor() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (!moduleName.trim()) return;
-                  addModule({ name: moduleName, course: String(cid) });
-                  setModuleName("");
-                  setShow(false);
+                disabled={saving || !moduleName.trim()}
+                onClick={async () => {
+                  setSaving(true);
+                  if (await onCreate(moduleName)) {
+                    setModuleName("");
+                    setShow(false);
+                  }
+                  setSaving(false);
                 }}
                 className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
                 id="wd-add-module-submit"

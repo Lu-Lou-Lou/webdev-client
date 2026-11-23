@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 export default function Labs() {
+  const httpServer = process.env.NEXT_PUBLIC_HTTP_SERVER;
   return (
     <div id="wd-labs">
       <h2>Ying-Lou Lu</h2>
@@ -8,9 +9,19 @@ export default function Labs() {
         id="wd-github"
         href="https://github.com/Lu-Lou-Lou/webdev-client"
         target="_blank"
+        rel="noreferrer"
+        className="me-3 text-blue-600 underline"
       >
-        GitHub Repository
+        Client GitHub Repository
       </a>
+      <a id="wd-server-github" href="https://github.com/Lu-Lou-Lou/webdev-server/tree/a5"
+        target="_blank" rel="noreferrer" className="me-3 text-blue-600 underline">
+        Server GitHub Repository
+      </a>
+      {httpServer && <a id="wd-server-deployment" href={httpServer}
+        target="_blank" rel="noreferrer" className="text-blue-600 underline">
+        Express Server
+      </a>}
       <h1>Labs</h1>
       <ul>
         <li>

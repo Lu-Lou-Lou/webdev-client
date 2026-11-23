@@ -1,35 +1,69 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { emptyAssignment, useAssignmentsStore } from "../../../../store/assignmentsStore";
+import * as client from "../../../client";
+import { getAccountError } from "../../../../account/client";
 import { useAccountContext } from "../../../../account/AccountContext";
 
 export default function AssignmentEditor({ cid, aid }: { cid: string; aid: string }) {
   const router = useRouter();
   const { currentUser } = useAccountContext();
   const canManage = currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
-  const assignments = useAssignmentsStore((state) => state.assignments);
-  const addAssignment = useAssignmentsStore((state) => state.addAssignment);
-  const updateAssignment = useAssignmentsStore((state) => state.updateAssignment);
-  const original = assignments.find((item) => item._id === aid && item.course === cid);
-  const [assignment, setAssignment] = useState(() => ({ ...(original ?? emptyAssignment), course: cid }));
-  const save = () => {
-    if (!canManage || (aid !== "new" && !original)) return;
-    const draft = { ...assignment, course: cid };
-    if (aid === "new") addAssignment(draft);
-    else updateAssignment({ ...draft, _id: aid });
-    router.push(`/courses/${cid}/assignments`);
-  };
-  if (aid !== "new" && !original) return <div>Assignment not found. <Link href={`/courses/${cid}/assignments`}>Back to assignments</Link></div>;
+  const { addAssignment, updateAssignment } = useAssignmentsStore();
+  const [assignment, setAssignment] = useState(() => ({ ...emptyAssignment, course: cid }));
+  const [loaded, setLoaded] = useState(aid === "new");
+  const [found, setFound] = useState(aid === "new");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (aid === "new") return;
+    let active = true;
+    client.findAssignmentsForCourse(cid).then((items) => {
+      if (!active) return;
+      const original = items.find((item) => item._id === aid);
+      if (original) {
+        setAssignment(original);
+        setFound(true);
+      }
+    }).catch((error: unknown) => {
+      if (active) setError(getAccountError(error, "Unable to load the assignment."));
+    }).finally(() => {
+      if (active) setLoaded(true);
+    });
+    return () => { active = false; };
+  }, [aid, cid]);
+
+  async function save() {
+    if (!canManage || !found) return;
+    setBusy(true);
+    setError("");
+    try {
+      if (aid === "new") addAssignment(await client.createAssignmentForCourse(cid, assignment));
+      else updateAssignment(await client.updateAssignment(assignment));
+      router.push(`/courses/${cid}/assignments`);
+    } catch (error) {
+      setError(getAccountError(error, "Unable to save the assignment."));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!loaded) return null;
+  if (!found || (aid === "new" && !canManage)) {
+    return <div>{error || "Assignment not found."} <Link href={`/courses/${cid}/assignments`}>Back to assignments</Link></div>;
+  }
   return (
     <div id="wd-assignments-editor">
+      {error && <p role="alert" className="text-red-600">{error}</p>}
       <label htmlFor="wd-name" className="mb-1 block text-sm">
         Assignment Name
       </label>
       <input
         id="wd-name"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.name}
         onChange={(e) => setAssignment({ ...assignment, name: e.target.value })}
         className="mb-4 w-full rounded border border-neutral-300 px-3 py-2"
@@ -37,7 +71,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
 
       <textarea
         id="wd-description"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.description}
         onChange={(e) => setAssignment({ ...assignment, description: e.target.value })}
         className="mb-6 h-40 w-full rounded border border-neutral-300 p-3"
@@ -49,7 +83,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
         </label>
         <input
           id="wd-points"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.points}
         onChange={(e) => setAssignment({ ...assignment, points: Number(e.target.value) })}
           className="flex-1 rounded border border-neutral-300 px-3 py-2"
@@ -61,7 +95,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
         </label>
         <select
           id="wd-group"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.group}
         onChange={(e) => setAssignment({ ...assignment, group: e.target.value })}
           className="flex-1 rounded border border-neutral-300 px-3 py-2"
@@ -81,7 +115,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
         </label>
         <select
           id="wd-display-grade-as"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.displayGradeAs}
         onChange={(e) => setAssignment({ ...assignment, displayGradeAs: e.target.value })}
           className="flex-1 rounded border border-neutral-300 px-3 py-2"
@@ -101,7 +135,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
         <div className="flex-1 rounded border border-neutral-300 p-4">
           <select
             id="wd-submission-type"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.submissionType}
         onChange={(e) => setAssignment({ ...assignment, submissionType: e.target.value })}
             className="w-full rounded border border-neutral-300 px-3 py-2"
@@ -112,35 +146,35 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
           <div className="mt-4 mb-2 font-semibold">Online Entry Options</div>
           <div className="mb-3 flex items-center gap-2">
             <input type="checkbox" id="wd-text-entry"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         checked={assignment.textEntry}
         onChange={(e) => setAssignment({ ...assignment, textEntry: e.target.checked })} />
             <label htmlFor="wd-text-entry">Text Entry</label>
           </div>
           <div className="mb-3 flex items-center gap-2">
             <input type="checkbox" id="wd-website-url"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         checked={assignment.websiteUrl}
         onChange={(e) => setAssignment({ ...assignment, websiteUrl: e.target.checked })} />
             <label htmlFor="wd-website-url">Website URL</label>
           </div>
           <div className="mb-3 flex items-center gap-2">
             <input type="checkbox" id="wd-media-recordings"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         checked={assignment.mediaRecordings}
         onChange={(e) => setAssignment({ ...assignment, mediaRecordings: e.target.checked })} />
             <label htmlFor="wd-media-recordings">Media Recordings</label>
           </div>
           <div className="mb-3 flex items-center gap-2">
             <input type="checkbox" id="wd-student-annotation"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         checked={assignment.studentAnnotation}
         onChange={(e) => setAssignment({ ...assignment, studentAnnotation: e.target.checked })} />
             <label htmlFor="wd-student-annotation">Student Annotation</label>
           </div>
           <div className="mb-3 flex items-center gap-2">
             <input type="checkbox" id="wd-file-upload"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         checked={assignment.fileUpload}
         onChange={(e) => setAssignment({ ...assignment, fileUpload: e.target.checked })} />
             <label htmlFor="wd-file-upload">File Upload</label>
@@ -156,7 +190,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
           </label>
           <input
             id="wd-assign-to"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.assignTo}
         onChange={(e) => setAssignment({ ...assignment, assignTo: e.target.value })}
             className="mb-4 w-full rounded border border-neutral-300 px-3 py-2"
@@ -168,7 +202,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
           <input
             type="date"
             id="wd-due-date"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.dueDate}
         onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })}
             className="mb-4 w-full rounded border border-neutral-300 px-3 py-2"
@@ -185,7 +219,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
               <input
                 type="date"
                 id="wd-available-from"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.availableFrom}
         onChange={(e) => setAssignment({ ...assignment, availableFrom: e.target.value })}
                 className="w-full rounded border border-neutral-300 px-3 py-2"
@@ -201,7 +235,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
               <input
                 type="date"
                 id="wd-available-until"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.availableUntil}
         onChange={(e) => setAssignment({ ...assignment, availableUntil: e.target.value })}
                 className="w-full rounded border border-neutral-300 px-3 py-2"
@@ -216,7 +250,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
       </label>
       <textarea
         id="wd-ai-editor-notes"
-        disabled={!canManage}
+        disabled={!canManage || busy}
         value={assignment.notes}
         onChange={(e) => setAssignment({ ...assignment, notes: e.target.value })}
         className="mb-6 h-40 w-full rounded border border-neutral-300 p-3"
@@ -235,6 +269,7 @@ export default function AssignmentEditor({ cid, aid }: { cid: string; aid: strin
           type="button"
           onClick={save}
           id="wd-save"
+          disabled={busy || !assignment.name.trim()}
           className="rounded bg-red-600 px-4 py-2 text-white no-underline"
         >
           Save
